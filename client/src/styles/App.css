@@ -1,0 +1,14 @@
+/* Smooth fonts + focus-visible only */
+* { -webkit-tap-highlight-color: transparent; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid rgba(15, 118, 110, 0.8); outline-offset: 2px; }
+
+/* Container helper to keep consistent max-width */
+.container-app {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* Prevent image layout shifts */
+img { display: block; max-width: 100%; height: auto; }

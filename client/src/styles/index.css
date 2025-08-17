@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS variables for light/dark surfaces (can extend later) */
+:root {
+  --surface: 248 246 255;
+  --card: 255 255 255;
+}
+html, body, #root {
+  height: 100%;
+}
