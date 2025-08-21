@@ -1,30 +1,30 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-import App from "./App.jsx";
+import App from './App.jsx';
 
 // global styles
-import "./styles/index.css";
-import "./styles/App.css";
+import './styles/index.css';
+import './styles/App.css';
 
 // context providers
-import { AuthProvider } from "./contexts/AuthContext.jsx";
-import { JobProvider } from "./contexts/JobContext.jsx";
-import { SocketProvider } from "./contexts/SocketContext.jsx"; // <- import
+import { AuthProvider } from './contexts/AuthContext.jsx';
+import { JobProvider } from './contexts/JobContext.jsx';
+import { SocketProvider } from './contexts/SocketContext.jsx'; // <- import
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  
     <BrowserRouter>
       <AuthProvider>
-        <JobProvider>
-          <SocketProvider> {/* <- wrap your app with SocketProvider */}
+        <SocketProvider>
+          <JobProvider>
             <App />
-          </SocketProvider>
-        </JobProvider>
+          </JobProvider>
+        </SocketProvider>
       </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  
 );

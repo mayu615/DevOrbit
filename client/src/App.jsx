@@ -1,95 +1,66 @@
-import React, { Suspense, lazy } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./layouts/Layout";
+import Home from "./pages/Home";
+import Jobs from "./pages/Jobs";
+import Messaging from "./pages/Messaging";
+import Notifications from "./pages/Notifications";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PageTransition from "./components/Shared/PageTransition"; 
 
-// Layouts
-import Layout from "./layouts/Layout.jsx";
-
-// Route guards
-import PrivateRoute from "./routes/PrivateRoute.jsx";
-import PublicRoute from "./routes/PublicRoute.jsx";
-
-// Shared
-import Loader from "./components/Shared/Loader.jsx";
-
-// Lazy-loaded pages
-const Home = lazy(() => import("./pages/Home.jsx"));
-const Jobs = lazy(() => import("./pages/Jobs.jsx"));
-const JobDetails = lazy(() => import("./pages/JobDetails.jsx"));
-const Login = lazy(() => import("./pages/Login.jsx"));
-const Register = lazy(() => import("./pages/Register.jsx"));
-const PostJob = lazy(() => import("./pages/PostJob.jsx"));
-const Profile = lazy(() => import("./pages/Profile.jsx"));
-const Messaging = lazy(() => import("./pages/Messaging.jsx"));
-const Notifications = lazy(() => import("./pages/Notifications.jsx"));
-const NotFound = lazy(() => import("./pages/NotFound.jsx"));
-
-export default function App() {
+function App() {
   return (
-    <Layout>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            }
-          />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/jobs/:id" element={<JobDetails />} />
+    <Routes>
+      {/* Public routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-          {/* Private Routes */}
-          <Route
-            path="/post-job"
-            element={
-              <PrivateRoute>
-                <PostJob />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/:id"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/messaging"
-            element={
-              <PrivateRoute>
-                <Messaging />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/notifications"
-            element={
-              <PrivateRoute>
-                <Notifications />
-              </PrivateRoute>
-            }
-          />
-
-          {/* Redirect */}
-          <Route path="/home" element={<Navigate to="/" replace />} />
-
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </Layout>
+      {/* Protected routes with Layout */}
+      <Route path="/" element={<Layout />}>
+        <Route
+          index
+          element={
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="jobs"
+          element={
+            <PageTransition>
+              <Jobs />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="messaging"
+          element={
+            <PageTransition>
+              <Messaging />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="notifications"
+          element={
+            <PageTransition>
+              <Notifications />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="profile/:id"
+          element={
+            <PageTransition>
+              <Profile />
+            </PageTransition>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
+
+export default App;
