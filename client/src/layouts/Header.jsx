@@ -1,8 +1,17 @@
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../contexts/AuthContext.jsx";
-import { Menu, X, Home, Briefcase, MessageCircle, Bell, User } from "lucide-react";
+import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext.jsx';
+import {
+  Menu,
+  X,
+  Home,
+  Briefcase,
+  MessageCircle,
+  Bell,
+  User,
+} from 'lucide-react';
+import DevHireLogo from '../assets/icons/icons8-permanent-job-50.png';
 
 export default function Header() {
   const { user, logout, loading } = useAuthContext();
@@ -11,26 +20,44 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate('/login');
   };
 
   const navLinkClass = ({ isActive }) =>
     `flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
-     ${isActive ? "bg-gradient-to-r from-teal-500 to-green-500 text-white shadow-md" 
-     : "text-slate-700 hover:text-teal-600 hover:bg-teal-50"}`;
+     ${
+       isActive
+         ? 'bg-gradient-to-r from-teal-500 to-green-500 text-white shadow-md'
+         : 'text-slate-700 hover:text-teal-600 hover:bg-teal-50'
+     }`;
 
   if (loading) {
     return (
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="fixed top-0 left-0 w-full bg-white shadow-sm z-50"
       >
         <div className="container-app flex items-center justify-between h-16">
-          <Link to="/" className="text-lg font-bold text-teal-700">
-            DevHire
+          <Link to="/" className="flex items-center gap-2">
+            {/* ✅ Transparent logo image */}
+            <img
+  src={DevHireLogo}
+  alt="DevHire Logo"
+  className="h-7 w-auto object-contain"
+  style={{
+    filter: "invert(56%) sepia(90%) saturate(420%) hue-rotate(130deg) brightness(95%) contrast(90%)"
+  }}
+/>
+
+
+            {/* ✅ Logo Text */}
+            <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent">
+              DevHire
+            </span>
           </Link>
+
           <span className="text-slate-500 text-sm">Loading...</span>
         </div>
       </motion.header>
@@ -41,13 +68,27 @@ export default function Header() {
     <motion.header
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       className="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200"
     >
       <div className="container-app flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-extrabold bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent">
-          DevHire
+        {/* ✅ Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          {/* ✅ Transparent logo image */}
+          <img
+  src={DevHireLogo}
+  alt="DevHire Logo"
+  className="h-7 w-auto object-contain"
+  style={{
+    filter: "invert(56%) sepia(90%) saturate(320%) hue-rotate(100deg) brightness(90%) contrast(80%)"
+  }}
+/>
+
+
+          {/* ✅ Logo Text */}
+          <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent">
+            DevHire
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -114,31 +155,59 @@ export default function Header() {
           transition={{ duration: 0.3 }}
           className="md:hidden bg-white border-t border-gray-200 shadow-md flex flex-col px-4 py-3 space-y-2"
         >
-          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+          <NavLink
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className={navLinkClass}
+          >
             <Home size={18} /> Home
           </NavLink>
-          <NavLink to="/jobs" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+          <NavLink
+            to="/jobs"
+            onClick={() => setMobileMenuOpen(false)}
+            className={navLinkClass}
+          >
             <Briefcase size={18} /> Jobs
           </NavLink>
           {user && (
             <>
-              <NavLink to="/messaging" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+              <NavLink
+                to="/messaging"
+                onClick={() => setMobileMenuOpen(false)}
+                className={navLinkClass}
+              >
                 <MessageCircle size={18} /> Messages
               </NavLink>
-              <NavLink to="/notifications" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+              <NavLink
+                to="/notifications"
+                onClick={() => setMobileMenuOpen(false)}
+                className={navLinkClass}
+              >
                 <Bell size={18} /> Notifications
               </NavLink>
-              <NavLink to={`/profile/${user._id}`} onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+              <NavLink
+                to={`/profile/${user._id}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className={navLinkClass}
+              >
                 <User size={18} /> Profile
               </NavLink>
             </>
           )}
           {!user ? (
             <>
-              <NavLink to="/login" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+              <NavLink
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className={navLinkClass}
+              >
                 Login
               </NavLink>
-              <NavLink to="/register" onClick={() => setMobileMenuOpen(false)} className={navLinkClass}>
+              <NavLink
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className={navLinkClass}
+              >
                 Register
               </NavLink>
             </>

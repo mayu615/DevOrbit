@@ -13,7 +13,7 @@ export default function Jobs() {
     try {
       setLoading(true);
       const res = await fetch(
-        `${API_BASE_URL}/jobs?page=${pageNum}&limit=20` // live remotive proxy
+        `${API_BASE_URL}/jobs?page=${pageNum}&limit=20`
       );
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
@@ -53,24 +53,29 @@ export default function Jobs() {
   if (loading && jobs.length === 0) return <Loader />;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        Available Jobs {jobs.length > 0 && <span>({jobs.length})</span>}
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6 text-teal-700">
+        Available Jobs{" "}
+        {jobs.length > 0 && (
+          <span className="text-gray-500 text-lg">({jobs.length})</span>
+        )}
       </h1>
 
       {jobs.length > 0 ? (
         <>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {/* Job Cards Grid */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {jobs.map((job) => (
               <JobCard key={job.id || job._id || job.url} job={job} />
             ))}
           </div>
 
+          {/* Load More Button */}
           {hasMore && (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-8">
               <button
                 onClick={handleLoadMore}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                className="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? "Loading..." : "Load More"}
@@ -79,7 +84,7 @@ export default function Jobs() {
           )}
         </>
       ) : (
-        <p>No jobs found.</p>
+        <p className="text-gray-500">No jobs found.</p>
       )}
     </div>
   );

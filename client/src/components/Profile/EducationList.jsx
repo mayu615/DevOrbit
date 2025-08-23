@@ -1,23 +1,41 @@
 // src/components/Profile/EducationList.jsx
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Pencil, Trash2 } from "lucide-react";
 import EducationForm from "./EducationForm";
+import { useAuth } from "../../hooks/useAuth"; // make sure path is correct
 
 export default function EducationList() {
+  const { user, setUser } = useAuth(); // ✅ you were using user/setUser but not imported
   const [education, setEducation] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const handleAdd = (edu) => {
+  // Load user education on mount / update
+  useEffect(() => {
+    setEducation(user?.education || []);
+  }, [user]);
+
+  const handleAdd = async (edu) => {
+    let updatedList;
     if (editingIndex !== null) {
-      // update existing
-      const updated = [...education];
-      updated[editingIndex] = edu;
-      setEducation(updated);
-      setEditingIndex(null);
+      updatedList = [...education];
+      updatedList[editingIndex] = edu;
     } else {
-      // add new
-      setEducation([...education, edu]);
+      updatedList = [...education, edu];
+    }
+
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/users/me",
+        { ...user, education: updatedList },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setEducation(res.data.education);
+      setUser(res.data); // update context
+      setEditingIndex(null);
+    } catch (err) {
+      console.error("Education update failed:", err);
     }
   };
 
@@ -26,9 +44,19 @@ export default function EducationList() {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (index) => {
-    const updated = education.filter((_, i) => i !== index);
-    setEducation(updated);
+  const handleDelete = async (index) => {
+    const updatedList = education.filter((_, i) => i !== index);
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/users/me",
+        { ...user, education: updatedList },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setEducation(res.data.education);
+      setUser(res.data);
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
   };
 
   return (

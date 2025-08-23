@@ -9,6 +9,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PageTransition from "./components/Shared/PageTransition"; 
 
+const ProtectedRoute = ({ children }) => {
+  // yaha auth logic add karna hai future me
+  return <PageTransition>{children}</PageTransition>;
+};
+
 function App() {
   return (
     <Routes>

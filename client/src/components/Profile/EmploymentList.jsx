@@ -1,23 +1,40 @@
 // src/components/Profile/EmploymentList.jsx
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Pencil, Trash2 } from "lucide-react";
 import EmploymentForm from "./EmploymentForm";
+import { useAuth } from "../../hooks/useAuth"; // adjust path
 
 export default function EmploymentList() {
+  const { user, setUser } = useAuth();
   const [employment, setEmployment] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const handleAdd = (emp) => {
+  useEffect(() => {
+    setEmployment(user?.employment || []);
+  }, [user]);
+
+  const handleAdd = async (emp) => {
+    let updatedList;
     if (editingIndex !== null) {
-      // update existing
-      const updated = [...employment];
-      updated[editingIndex] = emp;
-      setEmployment(updated);
-      setEditingIndex(null);
+      updatedList = [...employment];
+      updatedList[editingIndex] = emp;
     } else {
-      // add new
-      setEmployment([...employment, emp]);
+      updatedList = [...employment, emp];
+    }
+
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/users/me", // make sure route is correct
+        { ...user, employment: updatedList },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setEmployment(res.data.employment);
+      setUser(res.data);
+      setEditingIndex(null);
+    } catch (err) {
+      console.error("Employment update failed:", err.response?.data || err.message);
     }
   };
 
@@ -26,9 +43,19 @@ export default function EmploymentList() {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (index) => {
-    const updated = employment.filter((_, i) => i !== index);
-    setEmployment(updated);
+  const handleDelete = async (index) => {
+    const updatedList = employment.filter((_, i) => i !== index);
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/users/me",
+        { ...user, employment: updatedList },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setEmployment(res.data.employment);
+      setUser(res.data);
+    } catch (err) {
+      console.error("Delete failed:", err.response?.data || err.message);
+    }
   };
 
   return (
@@ -82,7 +109,6 @@ export default function EmploymentList() {
         </ul>
       )}
 
-      {/* Modal for add/edit */}
       {isFormOpen && (
         <EmploymentForm
           isOpen={isFormOpen}
