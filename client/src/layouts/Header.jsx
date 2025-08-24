@@ -11,7 +11,7 @@ import {
   Bell,
   User,
 } from 'lucide-react';
-import DevHireLogo from '../assets/icons/icons8-permanent-job-50.png';
+import DevHireLogo from '../assets/icons/Logo-1.png';
 
 export default function Header() {
   const { user, logout, loading } = useAuthContext();
@@ -45,17 +45,17 @@ export default function Header() {
             <img
   src={DevHireLogo}
   alt="DevHire Logo"
-  className="h-7 w-auto object-contain"
-  style={{
-    filter: "invert(56%) sepia(90%) saturate(420%) hue-rotate(130deg) brightness(95%) contrast(90%)"
-  }}
+  className="h-12 w-auto object-contain"
+  // style={{
+  //   filter: "invert(56%) sepia(90%) saturate(420%) hue-rotate(130deg) brightness(95%) contrast(90%)"
+  // }}
 />
 
 
-            {/* ✅ Logo Text */}
+            {/* ✅ Logo Text
             <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent">
               DevHire
-            </span>
+            </span> */}
           </Link>
 
           <span className="text-slate-500 text-sm">Loading...</span>
@@ -78,17 +78,17 @@ export default function Header() {
           <img
   src={DevHireLogo}
   alt="DevHire Logo"
-  className="h-7 w-auto object-contain"
-  style={{
-    filter: "invert(56%) sepia(90%) saturate(320%) hue-rotate(100deg) brightness(90%) contrast(80%)"
-  }}
+  className="h-12 w-auto object-contain"
+  // style={{
+  //   filter: "invert(56%) sepia(90%) saturate(320%) hue-rotate(100deg) brightness(90%) contrast(80%)"
+  // }}
 />
 
 
-          {/* ✅ Logo Text */}
+          {/* ✅ Logo Text
           <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent">
             DevHire
-          </span>
+          </span> */}
         </Link>
 
         {/* Desktop Nav */}
