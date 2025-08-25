@@ -1,34 +1,15 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import { request } from "./request";
 
-// Generic request function
-const request = async (endpoint, method = "GET", body, token) => {
-  const options = { method, headers: {} };
+// Auth
+export const loginUser = (email, password) =>
+  request("/auth/login", "POST", { email, password });
 
-  if (token) {
-    options.headers.Authorization = `Bearer ${token}`;
-  }
+export const registerUser = (userData) =>
+  request("/auth/register", "POST", userData);
 
-  if (body) {
-    options.headers["Content-Type"] = "application/json";
-    options.body = JSON.stringify(body);
-  }
+export const getMe = (token) =>
+  request("/auth/me", "GET", null, token);
 
-  const res = await fetch(`${API_URL}${endpoint}`, options);
-
-  let data;
-  try {
-    data = await res.json();
-  } catch {
-    data = null;
-  }
-
-  if (!res.ok) {
-    throw new Error(data?.message || `Request failed with status ${res.status}`);
-  }
-
-  return data;
-};
-
-// ✅ Jobs fetch — no token required
+// Jobs
 export const getJobs = (page = 1, limit = 20) =>
   request(`/jobs?page=${page}&limit=${limit}`, "GET");
