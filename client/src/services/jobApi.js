@@ -1,14 +1,12 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Generic request function
 const request = async (endpoint, method = "GET", body, token) => {
-  if (!token) throw new Error("Authentication token is required");
+  const options = { method, headers: {} };
 
-  const options = {
-    method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  if (token) {
+    options.headers.Authorization = `Bearer ${token}`;
+  }
 
   if (body) {
     options.headers["Content-Type"] = "application/json";
@@ -31,6 +29,6 @@ const request = async (endpoint, method = "GET", body, token) => {
   return data;
 };
 
-// ✅ Only GET jobs (read-only)
-export const getJobs = (page = 1, limit = 20, token) =>
-  request(`/jobs?page=${page}&limit=${limit}`, "GET", null, token);
+// ✅ Jobs fetch — no token required
+export const getJobs = (page = 1, limit = 20) =>
+  request(`/jobs?page=${page}&limit=${limit}`, "GET");
