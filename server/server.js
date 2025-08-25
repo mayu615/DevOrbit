@@ -53,6 +53,15 @@ if (!fs.existsSync(uploadsPath)) {
 // ✅ Make uploads folder public
 app.use("/uploads", express.static("uploads"));
 
+// ================== ROOT & HEALTH ROUTES ==================
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running successfully on Render!");
+});
+
+app.get("/healthz", (req, res) => {
+  res.json({ status: "OK", uptime: process.uptime(), timestamp: Date.now() });
+});
+
 
 // ================== API ROUTES ==================
 app.use("/api/auth", authRoutes);
